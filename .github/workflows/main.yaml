@@ -16,7 +16,7 @@ jobs:
         uses: pixta-dev/repository-mirroring-action@v1
         with:
           target_repo_url:
-            ssh://${{ secrets.CODECOMMIT_SSH_PRIVATE_KEY }}
+            ssh://${{ secrets.CODECOMMIT_REPO_URL }}
           ssh_private_key:
             ${{ secrets.CODECOMMIT_SSH_PRIVATE_KEY }}
           ssh_username:
