@@ -20,6 +20,7 @@ phases:
     commands:
       # Use AWS SAM to package the application by using AWS CloudFormation
       - sam build
+      # samconfig.tomlの「resolve_s3」の値を「false」に変更
       - sam package --s3-bucket $toolingBucket --s3-prefix code-zip --kms-key-id $toolingKey --output-template-file tooling-package-template.yaml
       - sam package --s3-bucket $tenantBucket --s3-prefix code-zip --kms-key-id $tenantKey --region ap-northeast-1 --output-template-file tenant-package-template.yaml
 artifacts:
