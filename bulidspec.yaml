@@ -1,0 +1,27 @@
+version: 0.2
+env:
+  parameter-store:
+    toolingKey: 'toolingKmsArn'
+    tenantKey: 'tenantKmsArn'
+
+phases:
+  install:
+    commands:
+      - cd hello-world
+      # Install all dependencies (including dependencies for running tests)
+      - npm install
+  pre_build:
+    commands:
+      # Discover and run unit tests in the '__tests__' directory
+      - npm run test
+      - cd ..
+  build:
+    commands:
+      # Use AWS SAM to package the application by using AWS CloudFormation
+      - sam package --s3-bucket cdk-codepipeline-artifactstore-ap-southeast-1 --s3-prefix code-zip --kms-key-id $toolingKey --output-template-file tooling-package-template.yaml
+      - sam package --s3-bucket cdk-codepipeline-artifactstore-ap-northeast-1 --s3-prefix code-zip --kms-key-id $tenantKey --region ap-northeast-1 --output-template-file tenant-package-template.yaml
+artifacts:
+  discard-paths: true
+  files:
+    - tooling-package-template.yaml
+    - tenant-package-template.yaml
